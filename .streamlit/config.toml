@@ -1,0 +1,21 @@
+[theme]
+base="dark"
+
+gatherUsageStats = false
+
+# screens and components. Examples of widgets using this color are st.slider and st.checkbox.
+primaryColor = "#6555DE" #Royal Blue
+
+# Background color for the container.
+backgroundColor = "#303080"
+secondaryBackgroundColor =  "#5458bc" 
+
+
+# Font color for the page.
+textColor = "#F9F9FF"
+
+# Font family (serif | sans serif | mono) for the page. Will not impact code areas.
+# Default: "sans serif"
+#font = "monospace"
+
+#Better not to change color values w/o discussing with PaulB
