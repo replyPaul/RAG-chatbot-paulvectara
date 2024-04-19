@@ -2,5 +2,6 @@ toml==0.10.2
 omegaconf==2.3.0
 syrupy==4.0.8
 streamlit==1.33.0
+streamlit-pills==0.3.0
 pillow==10.3.0
 requests_to_curl==1.1.0
