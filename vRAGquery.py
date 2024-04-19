@@ -13,7 +13,7 @@ class RAGQueryVect():
         self.customer_id = customer_id
         self.corpus_ids = corpus_ids
         self.api_key = api_key
-        self.prompt_name = "vectara-experimental-summary-ext-2023-10-23-med" #vectara-summary-ext-v1.2.0"
+        self.prompt_name = prompt_name if prompt_name else "vectara-experimental-summary-ext-2023-10-23-med" #vectara-summary-ext-v1.2.0"
         self.conv_id = None
 
     def promptquery(self, query_str: str):
@@ -40,7 +40,7 @@ class RAGQueryVect():
                     'numResults': 10,
                     'corpusKey': corpora_key_list,
                     'context_config': {
-                        'charsBefore': 10,
+                        'charsBefore': 5,
                         'charsAfter': 10,
                         'sentencesBefore': 10,
                         'sentencesAfter': 10,
@@ -51,7 +51,7 @@ class RAGQueryVect():
                     {
                         'rerankerId': 252525252, 
                         'mmrConfig': {
-                            'diversityBias': 0.1
+                            'diversityBias': 0.15
                         }
                     },
                     'summary': [
@@ -143,7 +143,7 @@ class RAGQueryVect():
             #citation_inx = refs_dict[url]
             #summary = summary[:start] + f'[\[{citation_inx}\]]({url})' + summary[end:]
             
-            citation_inx = refs_dict.get(url)
+            citation_inx = refs_dict.get(url) or refs_dict[url]
             if citation_inx:
                 summary = summary[:start] + f'[\[{citation_inx}\]]({url})' + summary[end:]
             else:

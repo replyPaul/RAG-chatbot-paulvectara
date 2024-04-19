@@ -1,3 +1,6 @@
+[server]
+python = "3.8" 
+
 [theme]
 base="dark"
 

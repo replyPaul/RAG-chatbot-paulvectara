@@ -3,7 +3,6 @@ import toml
 from omegaconf import OmegaConf
 from vRAGquery import RAGQueryVect
 import os
-import time
 import json
 
 from PIL import Image
@@ -28,13 +27,8 @@ api_key = st.secrets.get("api_key")
 description = st.secrets.get("description")
 
 
-
 with open("config.json") as f:
     config = json.load(f)
-
-#source_data_desc = config["source_data_desc"]
-#description = config["description"]
-#title = config["title"]    
 
 
 
@@ -101,10 +95,10 @@ def PaulVectaraRAGChat():
             "\n\n"
             "Vectara’s newest embedding model BOOMERANG has been used which encodes text from the data as “vector embeddings” \n "
             "and is used to power the high performance retrieval process that is part of the RAG pipeline.\n\n "
-            "UNSTRUCTURED is a Python library that brings advanced preprocessing of various file types, and simplifies the ingest of data in RAG pipelines."
+            "UNSTRUCTURED is a Python library that brings advanced preprocessing of various file types, and simplifies the ingest of data in RAG pipelines.\n"
         )
         st.markdown("---")
-        st.markdown("©️replypaul@gmail")
+        st.markdown("©️replypaul@gmail\n")
         #st.image(image, width=550)
 
     st.markdown(f"<center> <h3> ::  {cnfg.title}  :: \n\n <h4> {cnfg.title2} </h4> </h3> </center>", unsafe_allow_html=True)
@@ -118,7 +112,6 @@ def PaulVectaraRAGChat():
                 "What are the Key Dimensions to Systems Innovation?", "What is Systems Mapping?",
                 "What we can know from Mexico City Water System?", "Teach me Systems Thoery",
                 "What are the Systemic Design Principles for Complex Social Systems?",
-                
             ], ["✨","✨","✨","✨","✨","✨","✨","✨","✨","✨"],
             clearable=False,
             index=0,
@@ -126,7 +119,7 @@ def PaulVectaraRAGChat():
     #st.write( selectedExample+ "  <---  *Copy, paste/ or modify it at the bottom input bar*" )
     st.markdown("*Some examples above to click.  OR Type your Qs inside the input bar at bottom*")
 
-    placeholder_value = f"✍️ Type '{selectedExample}' here ✍️"
+    placeholder_value = f"✍️ Type-in prompts "
 
     
 
