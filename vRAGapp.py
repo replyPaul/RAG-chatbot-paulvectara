@@ -140,7 +140,7 @@ def PaulVectaraRAGChat():
     #st.write( selectedExample+ "  <---  *Copy, paste/ or modify it at the bottom input bar*" )
     st.markdown("*Some examples above to click.  OR Type your Qs inside the input bar at bottom*")
     st.text("PS: due to cloud python verison mismatch, sometimes examples are not rendering")
-
+    st.markdown("---")
     placeholder_value = f"✍️ Type-in prompts "
 
     
