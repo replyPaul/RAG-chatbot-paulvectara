@@ -15,7 +15,7 @@ class RAGQueryVect():
         self.api_key = api_key
         self.prompt_name = prompt_name if prompt_name else "vectara-experimental-summary-ext-2023-10-23-med" #vectara-summary-ext-v1.2.0"
         self.conv_id = None
-
+    
     def promptquery(self, query_str: str):
         corpora_key_list = [{
                 'customer_id': self.customer_id, 'corpus_id': corpus_id, 'lexical_interpolation_config': {'lambda': 0.025} #CorpusKeySemantics
@@ -70,7 +70,7 @@ class RAGQueryVect():
                 }, 
             ],
         }
-        
+        print(f"Sending request body: {body}")
         response = requests.post(endpoint, data=json.dumps(body), verify=True, headers=headers)    
         if response.status_code != 200:
             print(f"Query failed with code {response.status_code}, reason {response.reason}, text {response.text}")
@@ -125,7 +125,7 @@ class RAGQueryVect():
                 url = f"{metadata['url']}#:~:text={quote(text)}"
                 if url not in refs:
                     refs.append(url)
-
+        
         # replace references with markdown links
         refs_dict = {url:(inx+1) for inx,url in enumerate(refs)}
         for match in reversed(matches):
@@ -136,14 +136,26 @@ class RAGQueryVect():
             text = extract_bw_tags(responses[response_num-1]['text'], start_tag, end_tag)
             #url = f"{metadata['url']}#:~:text={quote(text)}"
             url = metadata.get('url')
-            if url:
-                url = f"{url}#:~:text={quote(text)}"
+            if not url:
+                summary = summary[:start] + "Citation Needed" + summary[end:]  # Or any placeholder text
             else:
-                url = "https://console.vectara.com/console/corpus/3/data"  # Or you can set as None
+                url = f"{url}#:~:text={quote(text)}"
+            
+            #if url:
+             #   url = f"{url}#:~:text={quote(text)}"
+            #else:
+             #   url = "No citation available" #"https://console.vectara.com/console/corpus/3/data"  # Or you can set as None
             #citation_inx = refs_dict[url]
             #summary = summary[:start] + f'[\[{citation_inx}\]]({url})' + summary[end:]
             
-            citation_inx = refs_dict.get(url) or refs_dict[url]
+            
+            #citation_inx = refs_dict.get(url) or refs_dict[url]
+            if url:
+                citation_inx = refs_dict[url]
+            else:
+                # handle the case where url is None (e.g., skip adding a link)
+                citation_inx = None
+
             if citation_inx:
                 summary = summary[:start] + f'[\[{citation_inx}\]]({url})' + summary[end:]
             else:
