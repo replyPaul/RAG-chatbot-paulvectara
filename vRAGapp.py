@@ -15,7 +15,6 @@ from dotenv import load_dotenv
 #from langchain.embeddings import OpenAIEmbeddings, CohereEmbeddings
 #from langchain.chat_models.openai import ChatOpenAI
 
-
 # Load environment variables from .env file
 #load_dotenv()
 load_dotenv(".streamlit/secrets.toml")
@@ -25,6 +24,7 @@ corpus_ids = st.secrets.get("corpus_ids")
 customer_id = st.secrets.get("customer_id")
 api_key = st.secrets.get("api_key")
 description = st.secrets.get("description")
+
 
 
 with open("config.json") as f:
@@ -40,6 +40,27 @@ title2 = config.get("title2", os.environ.get("title2", "."))
 
 # Assuming your logos are named logo1.png, logo2.png, etc.
 logos = ['logo1.png', 'logo2.png', 'logo3.png']  # Adjust file names as needed
+
+
+st.set_page_config(page_title=title, layout="centered")
+st.markdown(
+    """
+    <style>
+        @import 'https://fonts.googleapis.com/css2?family=Orbitron&display=swap';
+        .pixel-font {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            margin-bottom: 1rem;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+st.markdown(
+        """<div class="pixel-font"><center> :::  SYSTEMiX Bot  ::: </center></div>
+    """,
+        unsafe_allow_html=True,
+    )
 
 
 def PaulVectaraRAGChat():
@@ -64,8 +85,10 @@ def PaulVectaraRAGChat():
 
     cnfg = st.session_state.cnfg
     vq = st.session_state.vq
-    st.set_page_config(page_title=cnfg.title, layout="centered")
+    #st.set_page_config(page_title=cnfg.title, layout="centered")
     
+    st.markdown(f"<center><h4> {cnfg.title2} </h4></center>", unsafe_allow_html=True)
+    st.markdown(f"<center> {cnfg.description}  </center>", unsafe_allow_html=True)
 
 
     
@@ -101,9 +124,7 @@ def PaulVectaraRAGChat():
         st.markdown("©️replypaul@gmail\n")
         #st.image(image, width=550)
 
-    st.markdown(f"<center> <h3> ::  {cnfg.title}  :: \n\n <h4> {cnfg.title2} </h4> </h3> </center>", unsafe_allow_html=True)
-    st.markdown(f"<center> {cnfg.description}  </center>", unsafe_allow_html=True)
-
+    
     selectedExample = pills("",
             [   
                 "Confused about Systems Innovation, Systems Thinking, Systems Theory, Systemic Design,  and Design Thinking?",
@@ -118,6 +139,7 @@ def PaulVectaraRAGChat():
         )
     #st.write( selectedExample+ "  <---  *Copy, paste/ or modify it at the bottom input bar*" )
     st.markdown("*Some examples above to click.  OR Type your Qs inside the input bar at bottom*")
+    st.text("PS: due to cloud python verison mismatch, sometimes examples are not rendering")
 
     placeholder_value = f"✍️ Type-in prompts "
 
@@ -133,7 +155,7 @@ def PaulVectaraRAGChat():
 
 
     # Accept user input from the provided prompt
-    if prompt := st.chat_input(placeholder=placeholder_value, max_chars=250) or selectedExample:
+    if prompt := st.chat_input(placeholder=placeholder_value, max_chars=350) or selectedExample:
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
         # Display user message in chat message container

@@ -1,3 +1,14 @@
+[client]
+toolbarMode = "minimal"
+
+[runner]
+fastReruns = true
+enforceSerializableSessionState = false
+
+[server]
+enableStaticServing = true
+runOnSave = true
+
 [theme]
 base="dark"
 
