@@ -38,7 +38,6 @@ title2 = config.get("title2", os.environ.get("title2", "."))
 title3 = config.get("title3", os.environ.get("title3", ".")) 
 
 
-logos = ['logo1.png']  #, 'logo2.png' 
 st.set_page_config(page_title=title,  page_icon="🎡", layout="centered")
 st.markdown(
     """
@@ -94,7 +93,7 @@ def PaulVectaraRAGChat():
         image1 = Image.open('logo3.png')
         st.image(image1,width=280)
         st.markdown(f"## {cnfg.title}\n\n"
-                    f"A ***hybrid search*** application for generative summarization, utilizing both semantic and keyword-based search, supported by Grounded Generation (GG) powered by **VECTARA** and its ecosystem tools. \n\n"
+                    f"A ***hybrid search*** application for generative summarization, utilizing both semantic and keyword-based search, supported by Grounded Generation (GG) powered by Vectara and its ecosystem tools. \n\n"
                     f"---\n"
                     f"Created the GenAI app by integrating the ***Query and Summarization APIs***, and the Chat API to efficiently extract summarized responses from a small database of PDF, PPT, DOCX, HTML, TXT files ingested at vectara corpus using ***Ingesting API***. \n"
                     )#f"Built this GenAI app using the ***Query and Summarization APIs*** and leveraging the Chat API to efficiently retrieve information from an uploaded corpus of PDF,PPT,DOCX,MD,WEB files of database. \n")
@@ -103,18 +102,13 @@ def PaulVectaraRAGChat():
         st.markdown(f" {cnfg.title3}\n")
         #st.write("Created in an International AI hackathon  NNGroup - APRIL 2024 - Paul Biswa \n")
         st.markdown("---")
-        col1, _ = st.sidebar.columns(2)  # Create two columns (use one for logos)
-        for logo in logos:
-            with col1:
-                image = Image.open(logo)
-                st.image(image,width=270)
+        #col1, _ = st.sidebar.columns(2)  # Create two columns (use one for logos)
+       
         #st.markdown(
         #   "\n\n"
-        #    "Vectara’s newest embedding model BOOMERANG has been used by default which encodes text from the data as “vector embeddings”. \n "
-        #    "and is used to power the high performance retrieval process that is part of the RAG pipeline.\n\n "
         #     "UNSTRUCTURED is a Python library that brings advanced preprocessing of various file types, and simplifies the ingest of data in RAG pipelines.\n"
         #)
-        st.markdown("---")
+        st.markdown("Stages within RAG")
         image2 = Image.open('Calibrate.png')
         st.image(image2,width=280)
  
