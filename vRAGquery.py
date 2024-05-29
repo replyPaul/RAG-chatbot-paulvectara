@@ -16,9 +16,17 @@ class RAGQueryVect():
         self.prompt_name = prompt_name if prompt_name else "vectara-experimental-summary-ext-2023-10-23-med" #vectara-summary-ext-v1.2.0"
         self.conv_id = None
     
-    def promptquery(self, query_str: str):
-        corpora_key_list = [{
-                'customer_id': self.customer_id, 'corpus_id': corpus_id, 'lexical_interpolation_config': {'lambda': 0.025} #CorpusKeySemantics
+    def promptquery(self, query_str: str):    #using hybrid search
+        corpora_key_list = [
+            {
+                'customer_id': self.customer_id, 
+                'corpus_id': corpus_id, 
+                'semantics': "RESPONSE", #0
+                'metadataFilter': "part.is_title = true", #"part.is_title IS NULL",
+                'lexical_interpolation_config': {
+                    'lambda': 0.51
+                    },
+                'dim': [{"name": "", "value": 0.01}]      
             } for corpus_id in self.corpus_ids
         ]
 
@@ -49,7 +57,7 @@ class RAGQueryVect():
                     },
                     'rerankingConfig':
                     {
-                        'rerankerId': 252525252, 
+                        'rerankerId': 272725718, #252525252, 
                         'mmrConfig': {
                             'diversityBias': 0.15
                         }
@@ -64,20 +72,20 @@ class RAGQueryVect():
                                 'conversationId': self.conv_id
                             },
                             'debug': True,
-                            "factual_consistency_score": True
+                            "factual_consistency_score": True,
+                            "enableFactualConsistencyScore": True
                         },
                     ],
                 }, 
             ],
         }
-        print(f"Sending request body: {body}")
+    
         response = requests.post(endpoint, data=json.dumps(body), verify=True, headers=headers)    
         if response.status_code != 200:
             print(f"Query failed with code {response.status_code}, reason {response.reason}, text {response.text}")
             return "Sorry, something went wrong in my little brain. Please try again later."
 
         res = response.json()
-        print(res)
 
         top_k = 11
         summary = res['responseSet'][0]['summary'][0]['text']
@@ -91,7 +99,7 @@ class RAGQueryVect():
         if chat is not None and chat['status'] != None:
             st_code = chat['status']
             print(f"Chat query failed with code {st_code}")
-            # ... rest of your code handling chat failure
+            # ... rest of the code handling chat failure
             if st_code == 'RESOURCE_EXHAUSTED':
                 self.conv_id = None
                 return 'Sorry, Vectara chat turns exceeds plan limit.'
@@ -120,12 +128,14 @@ class RAGQueryVect():
             response_num = int(summary[start+1:end-1])
             doc_num = responses[response_num-1]['documentIndex']
             metadata = {item['name']: item['value'] for item in docs[doc_num]['metadata']}
+            print(metadata)
+            print("~~~~~~~~~~~~~~~~~~~~~~~~METADATA~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             text = extract_bw_tags(responses[response_num-1]['text'], start_tag, end_tag)
             if 'url' in metadata.keys():
                 url = f"{metadata['url']}#:~:text={quote(text)}"
                 if url not in refs:
                     refs.append(url)
-        
+                
         # replace references with markdown links
         refs_dict = {url:(inx+1) for inx,url in enumerate(refs)}
         for match in reversed(matches):
@@ -136,15 +146,20 @@ class RAGQueryVect():
             text = extract_bw_tags(responses[response_num-1]['text'], start_tag, end_tag)
             #url = f"{metadata['url']}#:~:text={quote(text)}"
             url = metadata.get('url')
+            title = metadata.get('title')
+            print(title)
             if not url:
-                summary = summary[:start] + "Citation Needed" + summary[end:]  # Or any placeholder text
+                #summary = summary[:start] + "." + summary[end:]  
+                # Use f-string to dynamically insert Title into the summary
+                summary = summary[:start] + f" (See: {title})\n" + summary[end:]
             else:
                 url = f"{url}#:~:text={quote(text)}"
-            
-            #if url:
-             #   url = f"{url}#:~:text={quote(text)}"
-            #else:
-             #   url = "No citation available" #"https://console.vectara.com/console/corpus/3/data"  # Or you can set as None
+            print(url)
+            print("~~~~~~~~~~~~~~~~~~~~~~~~URL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            if url:
+               url = f"{url}#:~:text={quote(text)}"
+            else:
+                url = None #"No citation available" #"https://console.vectara.com/console/corpus/3/data" 
             #citation_inx = refs_dict[url]
             #summary = summary[:start] + f'[\[{citation_inx}\]]({url})' + summary[end:]
             
@@ -158,9 +173,9 @@ class RAGQueryVect():
 
             if citation_inx:
                 summary = summary[:start] + f'[\[{citation_inx}\]]({url})' + summary[end:]
-            else:
+            else: pass
                 # Handle the case where url is None (e.g., skip adding a link)
-                summary = summary[:start] + f'[Citation]' + summary[end:]  # Or any placeholder
+                #summary = summary[:start] + f'[Citation]' + summary[end:]  # Or any placeholder
 
 
         return summary

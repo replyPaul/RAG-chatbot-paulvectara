@@ -1,8 +1,9 @@
 {
     "source_data_desc": "RAG based Vectara Chat",
-    "title": " SystemiX Bot ",
-    "title2": "Your Personal Assistant on Systems Innovation",
-    "description": "Sparking short conversations on Systems Thinking, Systems Theory, Systemic Deeisgn and Systems Innovation with this responsive chatbot based on your particular data"
+    "title": "SYSTEMiX - Advanced RAG App.",
+    "title2": "Adv. RAG powered Conversational AI Asst. for your database",
+    "title3": "Created in an AI hackathon to build Advanced RAG applications with Vectara - NNGroup - APRIL 2024 - Paul Biswa", 
+    "description": "An Augmented chatbot assistant to spark short conversations on Systems Thinking, Systemic Design, Systems Theory and Systems Innovation from your private knowledge database"
 }
     
   

@@ -6,8 +6,8 @@ fastReruns = true
 enforceSerializableSessionState = false
 
 [server]
-enableStaticServing = true
-runOnSave = true
+enableStaticServing = false
+runOnSave = false
 
 [theme]
 base="dark"
