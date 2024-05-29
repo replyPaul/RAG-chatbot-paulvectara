@@ -1,4 +1,4 @@
-# RAG-chatbot-paulvectara
+# RAG-chat-paulvectara
  
 ****SYSTEMiX Bot****
 Retrieval Augmented Generation (RAG) based conveersational AI app: 
