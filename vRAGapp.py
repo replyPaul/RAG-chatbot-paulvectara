@@ -111,7 +111,10 @@ def PaulVectaraRAGChat():
         st.markdown("Stages within RAG")
         image2 = Image.open('Calibrate.png')
         st.image(image2,width=280)
- 
+        st.markdown("---")
+        image = Image.open('logo1.png')
+        st.image(image,width=280)
+
     selectedExample = pills("",
             [   
                 "Confused about Systems Thinking, Systems Theory, Systemic Design, Systems Innovation, and Design Thinking?",
